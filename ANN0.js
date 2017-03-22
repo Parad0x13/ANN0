@@ -1,4 +1,5 @@
 let stage;
+let visualConnections = [];
 
 class ANN {
 	// [TODO] Create a better name than constantValue, there's gotta be a correct term for this
@@ -21,8 +22,6 @@ class ANN {
 		}
 
 		this.icon = createANNIcon(this);
-		this.icon.x = x;
-		this.icon.y = y;
 		stage.addChild(this.icon);
 	}
 
@@ -52,20 +51,15 @@ ANN.prototype.add_input = function(input) {
 	input.updateIcon();
 }
 
-ANN.prototype.add_output = function(output) {
-	// Need to do two things:
-	// 1. Add to the outputs of receiving ANN
-	// 2. Add to the inputs of the sending ANN
-	this.outputs.push(output);
-	output.inputs.push(this);
-	output.input_weights.push(1.0);
-
-	this.updateIcon();
-	output.updateIcon();
-}
-
 function attemptConnection() {
 	console.log("Attempting a connection");
+
+	if(stage.selectedOutput.ANN === stage.selectedInput.ANN) {
+		console.log("ANN cannot connect to itself");
+		return;
+	}
+
+	stage.selectedInput.ANN.add_input(stage.selectedOutput.ANN);
 }
 
 function init() {
@@ -77,14 +71,14 @@ function init() {
 
 	stage.on("mousedown", function(evt) {
 		let object = evt.currentTarget.stage.getObjectUnderPoint(evt.stageX, evt.stageY);
-		if(object != null && object.name == "output") {
+		if(object != null && object.name.includes("output")) {
 			stage.selectedOutput = object;
 		}
 	});
 
 	stage.on("pressup", function(evt) {
 		let object = evt.currentTarget.stage.getObjectUnderPoint(evt.stageX, evt.stageY);
-		if(object != null && object.name == "input") {
+		if(object != null && object.name.includes("input")) {
 			stage.selectedInput = object;
 			attemptConnection();
 		}
