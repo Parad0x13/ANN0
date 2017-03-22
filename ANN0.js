@@ -1,11 +1,47 @@
 let stage;
-let visualConnections = [];
+let connections = [];
+
+function manageConnections(ANN) {
+	for(d in connections) {
+		// [TODO] Find out if I really need to check both situations, can't I only do one?
+		if(connections[d].name.includes(ANN.name) || connections[d].name.includes(ANN.name)) {
+			connections[d].render();
+		}
+	}
+}
+
+class Connection {
+	constructor(_output, _input) {
+		this.output = _output;
+		this.input = _input;
+		this.name = "connection_" + this.output.name + "_" + this.input.name;
+		this.render();
+	}
+
+	render() {
+		let inputLoc = this.input.localToGlobal(0, 0);
+		let outputLoc = this.output.localToGlobal(0, 0);
+
+		let connection = stage.getChildByName(this.name);
+		if(connection == null)connection = new createjs.Shape();
+		connection.name = this.name;
+
+		connection.graphics.clear();
+		connection.graphics.setStrokeStyle(3).beginStroke("#FF6666");
+		connection.graphics.moveTo(outputLoc.x, outputLoc.y);
+		connection.graphics.lineTo(inputLoc.x, inputLoc.y);
+		connection.graphics.endStroke();
+
+		stage.addChild(connection);
+		stage.setChildIndex(connection, 0);
+	}
+}
 
 class ANN {
 	// [TODO] Create a better name than constantValue, there's gotta be a correct term for this
 	constructor(_constantValue = null) {
 		this.constantValue = _constantValue;
-		this.id = generate_id(3);
+		this.name = generate_id(3);
 		this.inputs = [];
 		this.input_weights = [];
 		this.outputs = [];
@@ -21,7 +57,7 @@ class ANN {
 			stage.removeChild(this.icon);
 		}
 
-		this.icon = createANNIcon(this);
+		this.icon = createANNIcon(stage, this);
 		stage.addChild(this.icon);
 	}
 
@@ -49,17 +85,24 @@ ANN.prototype.add_input = function(input) {
 
 	this.updateIcon();
 	input.updateIcon();
+
+	let connection = new Connection(stage.selectedOutput, stage.selectedInput);
+	connections.push(connection);
+	manageConnections(this);
 }
 
 function attemptConnection() {
 	console.log("Attempting a connection");
 
-	if(stage.selectedOutput.ANN === stage.selectedInput.ANN) {
+	let input = stage.selectedInput.ANN;
+	let output = stage.selectedOutput.ANN;
+
+	if(output == input) {
 		console.log("ANN cannot connect to itself");
 		return;
 	}
 
-	stage.selectedInput.ANN.add_input(stage.selectedOutput.ANN);
+	input.add_input(output);
 }
 
 function init() {

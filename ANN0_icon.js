@@ -1,5 +1,5 @@
 // [TODO] Make it so that I don't recreate the icon every time. Simply update it
-function createANNIcon(ANN) {
+function createANNIcon(stage, ANN) {
 	let retVal = ANN.icon;
 	if(retVal == null)retVal = new createjs.Container();
 
@@ -47,7 +47,7 @@ function createANNIcon(ANN) {
 
 		let circleRadius = 8;
 
-		let inputName = "input" + String(d);
+		let inputName = ANN.name + "_input_" + String(d);
 		let input = retVal.getChildByName(inputName);
 		if(input == null)input = new createjs.Shape();
 		input.name = inputName;
@@ -82,7 +82,7 @@ function createANNIcon(ANN) {
 
 		let circleRadius = 8;
 
-		let outputName = "output" + String(d);
+		let outputName = ANN.name + "_output_" + String(d);
 		let output = retVal.getChildByName(outputName);
 		if(output == null)output = new createjs.Shape();
 		output.name = outputName;
@@ -106,7 +106,7 @@ function createANNIcon(ANN) {
 		retVal.touchLocationY = evt.stageY - evt.currentTarget.y;
 
 		retVal.canMove = true;
-		let objectName = evt.currentTarget.stage.getObjectUnderPoint(evt.stageX, evt.stageY).name;
+		let objectName = stage.getObjectUnderPoint(evt.stageX, evt.stageY).name;
 		if(objectName.includes("input") || objectName.includes("output")) {
 			retVal.canMove = false;
 		}
@@ -116,6 +116,7 @@ function createANNIcon(ANN) {
 		if(retVal.canMove) {
 			evt.currentTarget.x = evt.stageX - retVal.touchLocationX;
 			evt.currentTarget.y = evt.stageY - retVal.touchLocationY;
+			manageConnections(ANN);
 		}
 	});
 
