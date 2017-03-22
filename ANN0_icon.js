@@ -34,7 +34,7 @@ function createANNIcon(ANN) {
 	let inputCount = ANN.inputs.length + 1;
 	for(let d = 0;d < inputCount;d++) {
 		let barLength = 25, barHeight = 7;
-		let offsetY = (-barHeight / 2) + (h / (inputCount + 1));
+		let offsetY = h / (inputCount + 1);
 
 		let barName = "input_bar" + String(d);
 		let bar = retVal.getChildByName(barName);
@@ -42,7 +42,7 @@ function createANNIcon(ANN) {
 		bar.name = barName;
 		bar.graphics.clear();
 		bar.graphics.beginFill("#C5C370").drawRect(0, 0, barLength, barHeight);
-		bar.setTransform(-barLength, (d + 1) * offsetY);
+		bar.setTransform(-barLength, (d + 1) * offsetY - barHeight / 2);
 		retVal.addChild(bar);
 
 		let circleRadius = 8;
@@ -69,7 +69,7 @@ function createANNIcon(ANN) {
 	let outputCount = ANN.outputs.length + 1;
 	for(let d = 0;d < outputCount;d++) {
 		let barLength = 25, barHeight = 7;
-		let offsetY = (-barHeight / 2) + (h / (outputCount + 1));
+		let offsetY = h / (outputCount + 1);
 
 		let barName = "output_bar" + String(d);
 		let bar = retVal.getChildByName(barName);
@@ -77,7 +77,7 @@ function createANNIcon(ANN) {
 		bar.name = barName;
 		bar.graphics.clear();
 		bar.graphics.beginFill("#3F8C71").drawRect(0, 0, barLength, barHeight);
-		bar.setTransform(w, (d + 1) * offsetY);
+		bar.setTransform(w, (d + 1) * offsetY - barHeight / 2);
 		retVal.addChild(bar);
 
 		let circleRadius = 8;
