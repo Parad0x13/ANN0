@@ -1,4 +1,4 @@
-var stage;
+let stage;
 
 class ANN {
 	// [TODO] Create a better name than constantValue, there's gotta be a correct term for this
@@ -12,7 +12,7 @@ class ANN {
 	}
 
 	updateIcon() {
-		var x = 0, y = 0;
+		let x = 0, y = 0;
 
 		if(this.icon != null) {
 			x = this.icon.x;
@@ -76,14 +76,14 @@ function init() {
 	createjs.Ticker.addEventListener("tick", stage);
 
 	stage.on("mousedown", function(evt) {
-		var object = evt.currentTarget.stage.getObjectUnderPoint(evt.stageX, evt.stageY);
+		let object = evt.currentTarget.stage.getObjectUnderPoint(evt.stageX, evt.stageY);
 		if(object != null && object.name == "output") {
 			stage.selectedOutput = object;
 		}
 	});
 
 	stage.on("pressup", function(evt) {
-		var object = evt.currentTarget.stage.getObjectUnderPoint(evt.stageX, evt.stageY);
+		let object = evt.currentTarget.stage.getObjectUnderPoint(evt.stageX, evt.stageY);
 		if(object != null && object.name == "input") {
 			stage.selectedInput = object;
 			attemptConnection();
