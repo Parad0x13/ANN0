@@ -57,7 +57,7 @@ class ANN {
 			stage.removeChild(this.icon);
 		}
 
-		this.icon = createANNIcon(stage, this);
+		this.icon = createANNIcon(this);
 		stage.addChild(this.icon);
 	}
 

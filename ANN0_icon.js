@@ -1,10 +1,16 @@
 // [TODO] Make it so that I don't recreate the icon every time. Simply update it
-function createANNIcon(stage, ANN) {
+function createANNIcon(ANN) {
 	let retVal = ANN.icon;
 	if(retVal == null)retVal = new createjs.Container();
 
-	let w = 100;
-	let h = 100;
+	let w = retVal.w;
+	if(w == null)w = 100;
+	retVal.w = w;
+
+	let h = retVal.h;
+	if(h == null)h = 100;
+	retVal.h = h;
+
 	let rad = w * 0.1;
 
 	let main = retVal.getChildByName("main");
@@ -34,7 +40,13 @@ function createANNIcon(stage, ANN) {
 	let inputCount = ANN.inputs.length + 1;
 	for(let d = 0;d < inputCount;d++) {
 		let barLength = 25, barHeight = 7;
+		let circleRadius = 8;
 		let offsetY = h / (inputCount + 1);
+
+		if(offsetY <= circleRadius * 2.5) {
+			retVal.h += circleRadius * 2.5;
+			return createANNIcon(ANN);
+		}
 
 		let barName = "input_bar" + String(d);
 		let bar = retVal.getChildByName(barName);
@@ -44,8 +56,6 @@ function createANNIcon(stage, ANN) {
 		bar.graphics.beginFill("#C5C370").drawRect(0, 0, barLength, barHeight);
 		bar.setTransform(-barLength, (d + 1) * offsetY - barHeight / 2);
 		retVal.addChild(bar);
-
-		let circleRadius = 8;
 
 		let inputName = ANN.name + "_input_" + String(d);
 		let input = retVal.getChildByName(inputName);
@@ -69,7 +79,13 @@ function createANNIcon(stage, ANN) {
 	let outputCount = ANN.outputs.length + 1;
 	for(let d = 0;d < outputCount;d++) {
 		let barLength = 25, barHeight = 7;
+		let circleRadius = 8;
 		let offsetY = h / (outputCount + 1);
+
+		if(offsetY <= circleRadius * 2.5) {
+			retVal.h += circleRadius * 2.5;
+			return createANNIcon(ANN);
+		}
 
 		let barName = "output_bar" + String(d);
 		let bar = retVal.getChildByName(barName);
@@ -79,8 +95,6 @@ function createANNIcon(stage, ANN) {
 		bar.graphics.beginFill("#3F8C71").drawRect(0, 0, barLength, barHeight);
 		bar.setTransform(w, (d + 1) * offsetY - barHeight / 2);
 		retVal.addChild(bar);
-
-		let circleRadius = 8;
 
 		let outputName = ANN.name + "_output_" + String(d);
 		let output = retVal.getChildByName(outputName);
@@ -106,7 +120,7 @@ function createANNIcon(stage, ANN) {
 		retVal.touchLocationY = evt.stageY - evt.currentTarget.y;
 
 		retVal.canMove = true;
-		let objectName = stage.getObjectUnderPoint(evt.stageX, evt.stageY).name;
+		let objectName = evt.currentTarget.stage.getObjectUnderPoint(evt.stageX, evt.stageY).name;
 		if(objectName.includes("input") || objectName.includes("output")) {
 			retVal.canMove = false;
 		}
