@@ -112,7 +112,7 @@ function init() {
 	createjs.Ticker.setFPS(60);
 	createjs.Ticker.addEventListener("tick", stage);
 
-	stage.on("mousedown", function(evt) {
+	/*stage.on("mousedown", function(evt) {
 		let object = evt.currentTarget.stage.getObjectUnderPoint(evt.stageX, evt.stageY);
 		if(object != null && object.name.includes("output")) {
 			stage.selectedOutput = object;
@@ -133,7 +133,14 @@ function init() {
 
 	b = new ANN(222);
 	b.icon.x = 500;
-	b.icon.y = 250;
+	b.icon.y = 250;*/
+
+	let connectorManager = new test_ConnectorManager(stage);
+	let connector = new test_Connector();
+	connectorManager.add(connector);
+	connector.setLoc(200, 200);
+	connector.shape = "square";
+	connector.isRounded = true;
 
 //	a.add_output(b);
 }
