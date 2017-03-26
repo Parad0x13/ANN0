@@ -136,11 +136,15 @@ function init() {
 	b.icon.y = 250;*/
 
 	let connectorManager = new test_ConnectorManager(stage);
-	let connector = new test_Connector();
-	connectorManager.add(connector);
-	connector.setLoc(200, 200);
-	connector.shape = "square";
-	connector.isRounded = true;
+
+	let connectorA = new test_Connector();
+	connectorA.setLoc(200, 200);
+
+	let connectorB = new test_Connector();
+	connectorB.setLoc(500, 300);
+
+	connectorManager.add(connectorA);
+	connectorManager.add(connectorB);
 
 //	a.add_output(b);
 }
