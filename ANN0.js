@@ -141,10 +141,17 @@ function init() {
 	connectorA.setLoc(200, 200);
 
 	let connectorB = new test_Connector();
+	connectorB.shape = "square";
 	connectorB.setLoc(500, 300);
 
-	connectorManager.add(connectorA);
-	connectorManager.add(connectorB);
+	let connectorC = new test_Connector();
+	connectorC.shape = "square";
+	connectorC.isRounded = true;
+	connectorC.setLoc(250, 400);
+
+	connectorManager.addConnector(connectorA);
+	connectorManager.addConnector(connectorB);
+	connectorManager.addConnector(connectorC);
 
 //	a.add_output(b);
 }
